@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">SampleApp</string>
+
+    <!--    Sign in fragment-->
+    <string name="continue_string">Continue</string>
+    <string name="welcome_string">Welcome to MaNaDr</string>
+    <string name="guideline_string">Enter your phone number to continue</string>
+    <string name="hint_phone_string">Enter your phone number</string>
+
+    <!--    OTP fragment-->
+    <string name="verification_string">OTP verification</string>
+    <string name="guideline_otp_string">Enter the 6-digit code just sent to</string>
+
+    <!--    Registration Activity-->
+    <string name="registration_string">Registration</string>
+    <string name="first_name_string">First Name</string>
+    <string name="first_name_hint_string">Enter your first Name</string>
+    <string name="last_name_string">Last Name</string>
+    <string name="last_name_hint_string">Enter your last Name</string>
+    <string name="nric_string">NRIC</string>
+    <string name="nric_hint_string">Enter your NRIC</string>
+    <string name="email_string">Email</string>
+    <string name="email_hint_string">Enter your email</string>
+    <string name="optional_string">(optional)</string>
+    <string name="policy_string">By creating an MaNaDr account, you confirm that you accept Terms and Conditions &amp; Privacy Policy</string>
+    <string name="create_string">Create MaNaDr Account</string>
+</resources>
