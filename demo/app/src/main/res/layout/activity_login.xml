@@ -22,11 +22,21 @@
         app:layout_constraintGuide_begin="16dp" />
 
 
-    <LinearLayout
-        android:id="@+id/content_form"
+    <include
+        android:id="@+id/content_signin_form"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        layout="@layout/fragment_sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toEndOf="@+id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right" />
+
+    <include
+        android:id="@+id/content_otp_form"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        layout="@layout/fragment_otp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintStart_toEndOf="@+id/guideline_left"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right" />
@@ -38,10 +48,10 @@
         android:text="@string/continue_string"
         android:layout_marginBottom="16dp"
         android:background="@drawable/circular_button"
-        style="@style/TextStyle2"
         app:layout_constraintStart_toEndOf="@+id/guideline_left"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/TextStyle2"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_right"

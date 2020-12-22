@@ -9,4 +9,8 @@
     <color name="black">#272727</color>
     <color name="pinkish_grey">#c2c2c2</color>
     <color name="warm_grey">#808080</color>
+    <color name="pale_grey">#f0f3f5</color>
+    <color name="tomato">#f13931</color>
+    <color name="pale_blue">#daeffe</color>
+    <color name="cerulean_blue">#0073e6</color>
 </resources>
