@@ -1,7 +1,10 @@
 package com.entertaiment.demo.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,9 +23,10 @@ import androidx.lifecycle.ViewModelProviders;
 import com.entertaiment.demo.R;
 import com.entertaiment.demo.commonbase.view.BaseActivity;
 import com.entertaiment.demo.utils.Constraints;
+import com.entertaiment.demo.utils.Util;
 import com.entertaiment.demo.viewmodel.MainViewModel;
 
-public class LogInActivity extends BaseActivity<MainViewModel> implements View.OnClickListener {
+public class LogInActivity extends BaseActivity<MainViewModel> implements View.OnClickListener, TextWatcher {
     private static final int SIGN_FORM = 0;
     private static final int OTP_FORM  = 1;
 
@@ -33,6 +37,7 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
     private EditText mEdPhoneNumber;
     private Spinner mListPhoneCode;
     private TextView mTvOtpTime;
+    private TextView mEdOtp1, mEdOtp2, mEdOtp3, mEdOtp4, mEdOtp5, mEdOtp6;
 
     private LinearLayout mSignForm, mOtpForm;
 
@@ -45,26 +50,23 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
 
     @Override
     public void observeViewModel() {
-        getViewModel().getValidPhone().observe(this, aBoolean -> {
-            if(aBoolean) {
-                findViewById(R.id.view_valid).setBackgroundColor(ContextCompat.getColor(this, R.color.white_two));
-                findViewById(R.id.tv_valid).setVisibility(View.GONE);
-            } else {
-                findViewById(R.id.view_valid).setBackgroundColor(ContextCompat.getColor(this, R.color.tomato));
-                findViewById(R.id.tv_valid).setVisibility(View.VISIBLE);
+        getViewModel().getRequestSuccess().observe(this, aBoolean -> {
+            setValidView(aBoolean);
+            if (aBoolean) {
+                changeFragment(OTP_FORM);
             }
         });
 
-        getViewModel().getRequestSuccess().observe(this, aBoolean -> {
-            TextView validText = findViewById(R.id.tv_valid);
+        getViewModel().getIsRegister().observe(this, aBoolean -> {
+            Intent startActivity;
+            stopCountTimeOtp();
             if(aBoolean) {
-                validText.setText(R.string.invalid_string);
-                validText.setVisibility(View.GONE);
-                changeFragment(OTP_FORM);
+                startActivity = new Intent(this, MainActivity.class);
             } else {
-                validText.setText(R.string.check_phone_string);
-                validText.setVisibility(View.VISIBLE);
+                startActivity = new Intent(this, RegistationActivity.class);
             }
+            startActivity(startActivity);
+            finish();
         });
     }
 
@@ -88,13 +90,24 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         mEdPhoneNumber = (EditText) findViewById(R.id.ed_phone_number);
         mListPhoneCode = (Spinner) findViewById(R.id.spinner_phone_code);
         mTvOtpTime     = (TextView) findViewById(R.id.tv_time_otp);
-    }
 
-    private void initListener() {
         mSignForm = findViewById(R.id.content_signin_form);
         mOtpForm = findViewById(R.id.content_otp_form);
 
+        mEdOtp1 = findViewById(R.id.et_otp1);
+        mEdOtp2 = findViewById(R.id.et_otp2);
+        mEdOtp3 = findViewById(R.id.et_otp3);
+        mEdOtp4 = findViewById(R.id.et_otp4);
+        mEdOtp5 = findViewById(R.id.et_otp5);
+        mEdOtp6 = findViewById(R.id.et_otp6);
+
+    }
+
+    private void initListener() {
+        mTvOtpTime.setOnClickListener(this);
+
         mBtContinue.setOnClickListener(this);
+        mEdPhoneNumber.addTextChangedListener(this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, Constraints.getPhoneCode());
         mListPhoneCode.setAdapter(adapter);
@@ -103,6 +116,101 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        mEdOtp1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count == 1) {
+                    mEdOtp2.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEdOtp2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count == 1) {
+                    mEdOtp3.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEdOtp3.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count == 1) {
+                    mEdOtp4.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEdOtp4.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count == 1) {
+                    mEdOtp5.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEdOtp5.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count == 1) {
+                    mEdOtp6.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -133,6 +241,10 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
             case R.id.bt_continue:
                 handleContinueBt();
                 break;
+            case R.id.tv_time_otp:
+                if(mTvOtpTime.getText().toString().equalsIgnoreCase("Resend")) {
+                    getViewModel().requestOTP(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString(), "sms");
+                }
             default:
                 break;
         }
@@ -145,7 +257,6 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(alertLayout);
-        alert.setCancelable(false);
         AlertDialog dialog = alert.create();
 
         btRequestToken.setOnClickListener(new View.OnClickListener() {
@@ -160,15 +271,23 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
 
     private void handleContinueBt() {
         if(mCurrentFormID != OTP_FORM) {
-            boolean isValid;
-            isValid = getViewModel().checkValidPhoneNumer(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString());
+            boolean isValid = Util.checkValidPhoneNumber(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString());
             if (isValid) {
                 displayAlertDialog();
+            }
+            setValidView(isValid);
+        } else {
+            if(getOtpToken() != null) {
+                getViewModel().verifyRegistered(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString(), getOtpToken());
             }
         }
     }
 
     private void countTimeOtp() {
+        mTvOtpTime.setTextColor(getResources().getColor(R.color.black));
+        TextView notice = findViewById(R.id.tv_notice);
+        notice.setText(getResources().getText(R.string.wait_string));
+        mEdOtp1.requestFocus();
         mOtpTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -177,9 +296,15 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
 
             @Override
             public void onFinish() {
-
+                mTvOtpTime.setTextColor(getResources().getColor(R.color.dodger_blue));
+                mTvOtpTime.setText(getResources().getText(R.string.resend_string));
+                notice.setText(getResources().getText(R.string.notice_string));
             }
         }.start();
+    }
+
+    private void stopCountTimeOtp() {
+        mOtpTimer.cancel();
     }
 
     @Override
@@ -195,5 +320,42 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    private void setValidView(boolean isValid) {
+        if(isValid) {
+            findViewById(R.id.view_valid).setBackgroundColor(ContextCompat.getColor(this, R.color.white_two));
+            findViewById(R.id.tv_valid).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.view_valid).setBackgroundColor(ContextCompat.getColor(this, R.color.tomato));
+            findViewById(R.id.tv_valid).setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if(mCurrentFormID != OTP_FORM) {
+            boolean isValid = Util.checkValidPhoneNumber(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString());
+            setValidView(isValid);
+        }
+    }
+
+    private String getOtpToken() {
+        String otp = mEdOtp1.getText().toString() + mEdOtp2.getText().toString() + mEdOtp3.getText().toString()
+                + mEdOtp4.getText().toString() + mEdOtp5.getText().toString() + mEdOtp6.getText().toString();
+        if (otp.length() == 6) {
+            return otp;
+        }
+        return null;
     }
 }

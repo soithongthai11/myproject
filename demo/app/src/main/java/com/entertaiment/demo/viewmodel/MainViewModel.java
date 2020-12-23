@@ -14,8 +14,8 @@ public class MainViewModel extends BaseViewModel {
 
     private static ItemRepository sItemRepository;
 
-    private MutableLiveData<Boolean> mValidPhone;
     private MutableLiveData<Boolean> mRequestSuccess;
+    private MutableLiveData<Boolean> mIsRegister;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -26,15 +26,15 @@ public class MainViewModel extends BaseViewModel {
         sItemRepository.requestOTP(phoneCode, phoneNumber, via);
     }
 
-    public boolean checkValidPhoneNumer(String phoneCode, String phoneNumber) {
-        return sItemRepository.checkValidPhoneNumer(phoneCode, phoneNumber);
-    }
-
-    public MutableLiveData<Boolean> getValidPhone() {
-        return mValidPhone = (MutableLiveData<Boolean>) Transformations.map(sItemRepository.getValidPhone(), input -> input);
+    public void verifyRegistered(String phoneCode, String phoneNumber, String otp) {
+        sItemRepository.verifyRegistered(phoneCode, phoneNumber, otp);
     }
 
     public MutableLiveData<Boolean> getRequestSuccess() {
         return mRequestSuccess = (MutableLiveData<Boolean>) Transformations.map(sItemRepository.getRequestSuccess(), input -> input);
+    }
+
+    public MutableLiveData<Boolean> getIsRegister() {
+        return mIsRegister = (MutableLiveData<Boolean>) Transformations.map(sItemRepository.getIsRegister(), input -> input);
     }
 }

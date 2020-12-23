@@ -17,6 +17,8 @@
     <string name="verification_string">OTP verification</string>
     <string name="guideline_otp_string">Enter the 6-digit code just sent to</string>
     <string name="wait_string">Please wait for OTP</string>
+    <string name="resend_string">Resend</string>
+    <string name="notice_string">Didn\'t get a text</string>
 
     <!--    Registration Activity-->
     <string name="registration_string">Registration</string>
@@ -31,5 +33,16 @@
     <string name="optional_string">(optional)</string>
     <string name="policy_string">By creating an MaNaDr account, you confirm that you accept <font color="#30a1f9">Terms and Conditions</font> &amp; <font color="#30a1f9">Privacy Policy</font></string>
     <string name="create_string">Create MaNaDr Account</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="first_name_valid_string">First name is required</string>
+    <string name="last_name_valid_string">Last name is required</string>
+    <string name="nric_valid_string">NRIC is required</string>
+    <string name="email_valid_string">Email is invalid</string>
+
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 
 </resources>

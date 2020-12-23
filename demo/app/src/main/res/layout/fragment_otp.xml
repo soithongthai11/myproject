@@ -24,12 +24,86 @@
         android:layout_marginTop="8dp"
         android:layout_gravity="center" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="36dp"
-        android:layout_marginRight="36dp"/>
+        android:layout_marginRight="36dp"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/et_otp1"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:hint="-"
+            android:inputType="number"
+            style="@style/TextStyle10"
+            android:maxLength="1"
+            android:background="@color/pale_grey"/>
+
+        <EditText
+            android:id="@+id/et_otp2"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:hint="-"
+            android:inputType="number"
+            android:layout_marginLeft="8dp"
+            style="@style/TextStyle10"
+            android:maxLength="1"
+            android:background="@color/pale_grey"/>
+
+        <EditText
+            android:id="@+id/et_otp3"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:hint="-"
+            android:inputType="number"
+            android:layout_marginLeft="8dp"
+            style="@style/TextStyle10"
+            android:maxLength="1"
+            android:background="@color/pale_grey"/>
+
+        <EditText
+            android:id="@+id/et_otp4"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:hint="-"
+            android:inputType="number"
+            android:layout_marginLeft="8dp"
+            style="@style/TextStyle10"
+            android:maxLength="1"
+            android:background="@color/pale_grey"/>
+
+        <EditText
+            android:id="@+id/et_otp5"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:hint="-"
+            android:inputType="number"
+            android:layout_marginLeft="8dp"
+            style="@style/TextStyle10"
+            android:maxLength="1"
+            android:background="@color/pale_grey"/>
+
+        <EditText
+            android:id="@+id/et_otp6"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:hint="-"
+            android:inputType="number"
+            android:layout_marginLeft="8dp"
+            style="@style/TextStyle10"
+            android:maxLength="1"
+            android:background="@color/pale_grey"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,6 +112,7 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/tv_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/wait_string"

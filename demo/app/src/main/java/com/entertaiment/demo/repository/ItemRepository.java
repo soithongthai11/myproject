@@ -8,6 +8,8 @@ import com.entertaiment.demo.api.ApiService;
 import com.entertaiment.demo.client.RetrofitClient;
 import com.entertaiment.demo.commonbase.repository.Repository;
 import com.entertaiment.demo.model.LogInResult;
+import com.entertaiment.demo.model.ProfileModel;
+import com.entertaiment.demo.model.VerifyRegistered;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +24,13 @@ public class ItemRepository implements Repository {
 
     private static ItemRepository sInstance;
     private static ApiService sRetrofitInstance;
-    private String mPhoneNumber;
 
-    private MutableLiveData<Boolean> mValidPhone = new MutableLiveData<>();
     private MutableLiveData<Boolean> mRequestSuccess = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mIsRegister = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> mCreateProfileSuccess = new MutableLiveData<>();
+
+    private VerifyRegistered mVerifyRegistered;
 
     private ItemRepository (Application application) {
         sRetrofitInstance = RetrofitClient.getClient();
@@ -38,18 +43,6 @@ public class ItemRepository implements Repository {
             }
         }
         return sInstance;
-    }
-
-    public boolean checkValidPhoneNumer(String phoneCode, String phoneNumber) {
-        boolean isValid = false;
-        if(!TextUtils.isEmpty(phoneNumber) && android.util.Patterns.PHONE.matcher(phoneNumber).matches()) {
-            mValidPhone.setValue(true);
-            mPhoneNumber = phoneCode + phoneNumber;
-            isValid = true;
-        } else {
-            mValidPhone.setValue(false);
-        }
-        return isValid;
     }
 
     public void requestOTP(String phoneCode, String phoneNumber, String via) {
@@ -73,11 +66,62 @@ public class ItemRepository implements Repository {
         });
     }
 
-    public MutableLiveData<Boolean> getValidPhone() {
-        return mValidPhone;
+    public void verifyRegistered(String phoneCode, String phoneNumber, String otp) {
+
+        sRetrofitInstance.verifyRegistered(phoneCode, phoneNumber, otp).enqueue(new Callback<VerifyRegistered>() {
+            @Override
+            public void onResponse(Call<VerifyRegistered> call, Response<VerifyRegistered> response) {
+                int code = response.code();
+                if(code == 200) {
+                    mVerifyRegistered = response.body();
+                    mIsRegister.setValue(mVerifyRegistered.getIsRegistered());
+                }else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerifyRegistered> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void createProfiles(String email, String firstName, String nric, String lastName) {
+        Map<String,Object> data=new HashMap<>();
+        data.put("email",email);
+        data.put("firstname",firstName);
+        data.put("id_number",nric);
+        data.put("lastname",lastName);
+
+        sRetrofitInstance.createProfile(mVerifyRegistered.getToken(), data).enqueue(new Callback<ProfileModel>() {
+            @Override
+            public void onResponse(Call<ProfileModel> call, Response<ProfileModel> response) {
+                int code = response.code();
+                if(code == 200) {
+                    ProfileModel profileModel = response.body();
+                    mCreateProfileSuccess.setValue(true);
+                }else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+            }
+        });
     }
 
     public MutableLiveData<Boolean> getRequestSuccess() {
         return mRequestSuccess;
+    }
+
+    public MutableLiveData<Boolean> getIsRegister() {
+        return mIsRegister;
+    }
+
+    public MutableLiveData<Boolean> getCreateProfileSuccess() {
+        return mCreateProfileSuccess;
     }
 }
