@@ -45,7 +45,6 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
     private LinearLayout mSignForm, mOtpForm;
 
     private CountDownTimer mOtpTimer;
-    private boolean mIsOtpTime;
 
     @Override
     public int getLayoutId() {
@@ -327,7 +326,6 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         mOtpTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                mIsOtpTime = true;
                 mTvOtpTime.setText("(00:"+millisUntilFinished/1000+")");
             }
 
@@ -336,19 +334,18 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
                 mTvOtpTime.setTextColor(getResources().getColor(R.color.dodger_blue));
                 mTvOtpTime.setText(getResources().getText(R.string.resend_string));
                 notice.setText(getResources().getText(R.string.notice_string));
-                mIsOtpTime = false;
             }
         }.start();
     }
 
     private void stopCountTimeOtp() {
-        mIsOtpTime = false;
         mOtpTimer.cancel();
     }
 
     @Override
     public void onBackPressed() {
         if(mCurrentFormID == OTP_FORM) {
+            stopCountTimeOtp();
             changeFragment(SIGN_FORM);
         } else {
             super.onBackPressed();
