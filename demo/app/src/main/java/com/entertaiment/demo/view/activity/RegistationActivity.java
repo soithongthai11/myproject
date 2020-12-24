@@ -136,7 +136,7 @@ public class RegistationActivity extends BaseActivity<RegistationViewModel> impl
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!Util.isValidEmail(mEdEmail.getEditText().getText())) {
+                if(Util.isEmpty(mEdEmail.getEditText().getText()) || !Util.isValidEmail(mEdEmail.getEditText().getText())) {
                     mEdEmail.setError(null);
                 }
             }
@@ -160,7 +160,7 @@ public class RegistationActivity extends BaseActivity<RegistationViewModel> impl
             valid = false;
         }
 
-        if(!Util.isValidEmail(mEdEmail.getEditText().getText())) {
+        if(!Util.isEmpty(mEdEmail.getEditText().getText()) || Util.isValidEmail(mEdEmail.getEditText().getText())) {
             mEdEmail.setError(getResources().getString(R.string.email_valid_string));
             valid = false;
         }

@@ -16,6 +16,7 @@ public class MainViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> mRequestSuccess;
     private MutableLiveData<Boolean> mIsRegister;
+    private MutableLiveData<Boolean> mOtpValid;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -36,5 +37,9 @@ public class MainViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getIsRegister() {
         return mIsRegister = (MutableLiveData<Boolean>) Transformations.map(sItemRepository.getIsRegister(), input -> input);
+    }
+
+    public MutableLiveData<Boolean> getOtpValid() {
+        return mOtpValid = (MutableLiveData<Boolean>) Transformations.map(sItemRepository.getOtpValid(), input -> input);
     }
 }

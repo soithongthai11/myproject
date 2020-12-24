@@ -1,6 +1,7 @@
 package com.entertaiment.demo.api;
 
 import com.entertaiment.demo.model.LogInResult;
+import com.entertaiment.demo.model.Profile;
 import com.entertaiment.demo.model.ProfileModel;
 import com.entertaiment.demo.model.VerifyRegistered;
 
@@ -11,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -31,4 +33,7 @@ public interface ApiService {
     @Headers("X-Api-Key: Ikf5qGHzDF0rlz-Cu-7pYOHlRCLN8L9q")
     Call<ProfileModel> createProfile(@Header("Authorization") String token, @Body Map<String, Object> params);
 
+    @GET("me/profile")
+    @Headers("X-Api-Key: Ikf5qGHzDF0rlz-Cu-7pYOHlRCLN8L9q")
+    Call<Profile> getProfile(@Header("Authorization") String token);
 }

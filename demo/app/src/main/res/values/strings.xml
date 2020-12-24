@@ -39,10 +39,14 @@
     <string name="nric_valid_string">NRIC is required</string>
     <string name="email_valid_string">Email is invalid</string>
 
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
+    <!--    Pop up-->
+    <string name="title_information_popup">Oops!</string>
+    <string name="otp_message_valid_string">OTP is valid</string>
+    <string name="otp_message_empty_valid_string">OTP is empty</string>
+    <string name="ok_string">OK</string>
+
+
+    <!--    Profile fragment-->
+    <string name="full_name_string">Full name</string>
 
 </resources>

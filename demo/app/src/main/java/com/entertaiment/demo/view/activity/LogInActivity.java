@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.BaseKeyListener;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -36,12 +39,13 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
     private Button  mBtContinue;
     private EditText mEdPhoneNumber;
     private Spinner mListPhoneCode;
-    private TextView mTvOtpTime;
+    private TextView mTvOtpTime, mTvPhoneNumber;
     private TextView mEdOtp1, mEdOtp2, mEdOtp3, mEdOtp4, mEdOtp5, mEdOtp6;
 
     private LinearLayout mSignForm, mOtpForm;
 
     private CountDownTimer mOtpTimer;
+    private boolean mIsOtpTime;
 
     @Override
     public int getLayoutId() {
@@ -54,6 +58,12 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
             setValidView(aBoolean);
             if (aBoolean) {
                 changeFragment(OTP_FORM);
+            }
+        });
+
+        getViewModel().getOtpValid().observe(this, aBoolean -> {
+            if(aBoolean) {
+                showAlertPopup(getResources().getString(R.string.otp_message_valid_string));
             }
         });
 
@@ -90,6 +100,7 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         mEdPhoneNumber = (EditText) findViewById(R.id.ed_phone_number);
         mListPhoneCode = (Spinner) findViewById(R.id.spinner_phone_code);
         mTvOtpTime     = (TextView) findViewById(R.id.tv_time_otp);
+        mTvPhoneNumber = (TextView) findViewById(R.id.tv_phone_number);
 
         mSignForm = findViewById(R.id.content_signin_form);
         mOtpForm = findViewById(R.id.content_otp_form);
@@ -219,20 +230,23 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
     }
 
     private void changeFragment(int formID) {
-        this.mCurrentFormID = formID;
         switch (formID) {
             case SIGN_FORM:
                 mSignForm.setVisibility(View.VISIBLE);
                 mOtpForm.setVisibility(View.GONE);
                 break;
             case OTP_FORM:
-                mSignForm.setVisibility(View.GONE);
-                mOtpForm.setVisibility(View.VISIBLE);
+                if(mCurrentFormID != formID) {
+                    mSignForm.setVisibility(View.GONE);
+                    mOtpForm.setVisibility(View.VISIBLE);
+                    mTvPhoneNumber.setText(mListPhoneCode.getSelectedItem().toString() + " " + mEdPhoneNumber.getText().toString());
+                }
                 countTimeOtp();
                 break;
             default:
                 break;
         }
+        this.mCurrentFormID = formID;
     }
 
     @Override
@@ -269,6 +283,26 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         dialog.show();
     }
 
+    private void showAlertPopup(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.information_layout, null);
+        final Button btOk = (Button) alertLayout.findViewById(R.id.bt_close);
+        final TextView tvMessage = (TextView) alertLayout.findViewById(R.id.tv_popup_message);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setView(alertLayout);
+        AlertDialog dialog = alert.create();
+
+        tvMessage.setText(message);
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
     private void handleContinueBt() {
         if(mCurrentFormID != OTP_FORM) {
             boolean isValid = Util.checkValidPhoneNumber(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString());
@@ -279,6 +313,8 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         } else {
             if(getOtpToken() != null) {
                 getViewModel().verifyRegistered(mListPhoneCode.getSelectedItem().toString(), mEdPhoneNumber.getText().toString(), getOtpToken());
+            } else {
+                showAlertPopup(getResources().getString(R.string.otp_message_empty_valid_string));
             }
         }
     }
@@ -291,6 +327,7 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
         mOtpTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                mIsOtpTime = true;
                 mTvOtpTime.setText("(00:"+millisUntilFinished/1000+")");
             }
 
@@ -299,11 +336,13 @@ public class LogInActivity extends BaseActivity<MainViewModel> implements View.O
                 mTvOtpTime.setTextColor(getResources().getColor(R.color.dodger_blue));
                 mTvOtpTime.setText(getResources().getText(R.string.resend_string));
                 notice.setText(getResources().getText(R.string.notice_string));
+                mIsOtpTime = false;
             }
         }.start();
     }
 
     private void stopCountTimeOtp() {
+        mIsOtpTime = false;
         mOtpTimer.cancel();
     }
 

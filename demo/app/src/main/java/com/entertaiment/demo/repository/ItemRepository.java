@@ -8,6 +8,7 @@ import com.entertaiment.demo.api.ApiService;
 import com.entertaiment.demo.client.RetrofitClient;
 import com.entertaiment.demo.commonbase.repository.Repository;
 import com.entertaiment.demo.model.LogInResult;
+import com.entertaiment.demo.model.Profile;
 import com.entertaiment.demo.model.ProfileModel;
 import com.entertaiment.demo.model.VerifyRegistered;
 
@@ -27,8 +28,12 @@ public class ItemRepository implements Repository {
 
     private MutableLiveData<Boolean> mRequestSuccess = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsRegister = new MutableLiveData<>();
+    private MutableLiveData<Boolean> mOtpValid = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> mCreateProfileSuccess = new MutableLiveData<>();
+
+    private MutableLiveData<VerifyRegistered> mProfileData = new MutableLiveData<>();
+    private MutableLiveData<Profile> mDetailProfileData = new MutableLiveData<>();
 
     private VerifyRegistered mVerifyRegistered;
 
@@ -74,9 +79,10 @@ public class ItemRepository implements Repository {
                 int code = response.code();
                 if(code == 200) {
                     mVerifyRegistered = response.body();
+                    mProfileData.setValue(mVerifyRegistered);
                     mIsRegister.setValue(mVerifyRegistered.getIsRegistered());
                 }else {
-
+                    mOtpValid.setValue(true);
                 }
             }
 
@@ -100,6 +106,9 @@ public class ItemRepository implements Repository {
                 int code = response.code();
                 if(code == 200) {
                     ProfileModel profileModel = response.body();
+                    mVerifyRegistered.setFirstname(profileModel.getFistName());
+                    mVerifyRegistered.setLastname(profileModel.getLastName());
+                    mProfileData.setValue(mVerifyRegistered);
                     mCreateProfileSuccess.setValue(true);
                 }else {
 
@@ -108,6 +117,23 @@ public class ItemRepository implements Repository {
 
             @Override
             public void onFailure(Call<ProfileModel> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getProfiles() {
+        sRetrofitInstance.getProfile(mVerifyRegistered.getToken()).enqueue(new Callback<Profile>() {
+            @Override
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
+                int code = response.code();
+                if(code == 200) {
+                    mDetailProfileData.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Profile> call, Throwable t) {
 
             }
         });
@@ -123,5 +149,17 @@ public class ItemRepository implements Repository {
 
     public MutableLiveData<Boolean> getCreateProfileSuccess() {
         return mCreateProfileSuccess;
+    }
+
+    public MutableLiveData<Boolean> getOtpValid() {
+        return mOtpValid;
+    }
+
+    public MutableLiveData<VerifyRegistered> getProfileData() {
+        return mProfileData;
+    }
+
+    public MutableLiveData<Profile> getDetailProfileData() {
+        return mDetailProfileData;
     }
 }
