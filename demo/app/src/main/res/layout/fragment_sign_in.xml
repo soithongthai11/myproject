@@ -35,7 +35,7 @@
             android:id="@+id/spinner_phone_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
+            style="style/Widget.App.Spinner"
             android:spinnerMode="dropdown" />
 
     <EditText

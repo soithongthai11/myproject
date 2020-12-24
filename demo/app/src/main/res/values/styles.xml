@@ -8,6 +8,11 @@
         <item name="android:windowBackground">@color/white_two</item>
     </style>
 
+    <style name="Widget.App.Spinner" parent="@style/Widget.AppCompat.Spinner">
+        <item name="overlapAnchor">true</item>
+        <item name="android:background">@drawable/background_spinner</item>
+    </style>
+
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/white</item>
         <item name="android:statusBarColor">@color/white</item>
